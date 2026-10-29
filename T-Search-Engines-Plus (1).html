@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10131d">
+<title>T Search Plus</title>
+<meta name="description" content="T Search Plus — a customizable web search start page.">
+<script>(function(){try{var s=JSON.parse(localStorage.getItem('t-search-appearance-v1')||'{}');var a=['blue','purple','green','red'].indexOf(s.accent)>-1?s.accent:'blue';var m=s.mode==='light'?'light':'dark';document.documentElement.dataset.accent=a;document.documentElement.dataset.mode=m}catch(e){}})();</script>
+<style>
+:root{--accent:#8ab4ff;--accent-soft:#b3c8ff;--accent2:#62e5e0;--ink-dark:#3568c9;--accent-text:var(--accent);--bg-base:#10131d;--bg-mid:#151c2d;--text:#f4f6ff;--muted:#a6aec3;--surface:#ffffff08;--surface-hover:#ffffff10;--input-bg:#202532;--panel:#1b2232;--solid:#171e2e;--line:#ffffff16;--line-strong:#ffffff20;--chip:#aebbd4;--ghost:#77839c;--foot:#717d97;--placeholder:#9da7bc;--icon:#b9c6e2;--grid:#ffffff04;--overlay:#050811bb;--shadow:#0005;--toast-bg:#29344a;--toast-line:#536581;--badge-bg:#263451;--badge-text:#b9d0ff;--tag:#8fe7df;--ink-mute:#8b93ab;--hover-tint:color-mix(in srgb,var(--accent) 7%,transparent);--ring:color-mix(in srgb,var(--accent) 42%,transparent);--hero-line:color-mix(in srgb,var(--accent) 21%,transparent);--hero-bg:color-mix(in srgb,var(--accent) 5%,transparent)}
+:root[data-accent="purple"]{--accent:#b68cff;--accent-soft:#d6c2ff;--accent2:#f08cff;--ink-dark:#7a3fd6;--badge-text:#dccfff;--tag:#e8b8ff}
+:root[data-accent="green"]{--accent:#6fdc9a;--accent-soft:#b2f5d0;--accent2:#62e5c0;--ink-dark:#1f8a56;--badge-text:#c2f7dc;--tag:#8ff0c8}
+:root[data-accent="red"]{--accent:#ff7f8f;--accent-soft:#ffc2c9;--accent2:#ffa86b;--ink-dark:#c23b52;--badge-text:#ffd0d6;--tag:#ffb8a0}
+:root[data-mode="light"]{--accent-text:var(--ink-dark);--bg-base:#eef2fa;--bg-mid:#fbfcff;--text:#141a2b;--muted:#5a6479;--surface:#ffffffb3;--surface-hover:#ffffff;--input-bg:#ffffff;--panel:#ffffff;--solid:#ffffff;--line:#1420321a;--line-strong:#1420322e;--chip:#3c4660;--ghost:#7a8399;--foot:#6b7489;--placeholder:#8a92a6;--icon:#4a5570;--grid:#1420320a;--overlay:#dfe6f3aa;--shadow:#1420321f;--toast-bg:#ffffff;--toast-line:#c9d2e3;--badge-bg:#e6edfb;--badge-text:#2a4d8f;--tag:#1a7f6a;--ink-mute:#7a8399}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 25%,color-mix(in srgb,var(--accent) 20%,var(--bg-mid)) 0,var(--bg-mid) 34%,var(--bg-base) 72%);color:var(--text);font-family:Tahoma,Arial,sans-serif;overflow-x:hidden;transition:background .3s,color .3s}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:36px 36px;mask-image:linear-gradient(to bottom,#000,transparent 80%)}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:17px clamp(16px,5vw,58px);position:relative;z-index:2}
+.brand{display:flex;align-items:center;gap:10px;font-weight:bold}.brandmark{width:38px;height:38px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#11182a;font-size:23px;box-shadow:0 6px 25px color-mix(in srgb,var(--accent2) 20%,transparent)}.brand small{display:block;color:var(--muted);font-weight:normal;font-size:11px}
+.toplinks{display:flex;gap:8px}.toplinks button{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:8px 12px;font:inherit;font-size:12px;cursor:pointer}
+main{width:min(820px,92%);margin:clamp(60px,12vh,125px) auto 65px;text-align:center;position:relative;z-index:1}
+.hero-label{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hero-line);background:var(--hero-bg);color:var(--accent-text);border-radius:999px;padding:7px 13px;font-size:12px;margin-bottom:20px}.pulse{width:7px;height:7px;border-radius:50%;background:var(--accent2);box-shadow:0 0 12px var(--accent2)}
+h1{font-size:clamp(48px,10vw,82px);letter-spacing:-2px;line-height:1.25;margin:0 0 12px;font-weight:800}h1 .t{background:linear-gradient(110deg,var(--text) 5%,var(--accent-text) 42%,var(--accent2) 85%);color:transparent;background-clip:text;-webkit-background-clip:text}
+.subtitle{font-size:clamp(14px,2.7vw,18px);color:var(--muted);margin:0 0 38px}
+.search-shell{padding:7px;border-radius:28px;background:linear-gradient(125deg,color-mix(in srgb,var(--accent) 42%,transparent),color-mix(in srgb,var(--accent2) 36%,transparent),var(--surface-hover));box-shadow:0 16px 55px var(--shadow),0 0 35px color-mix(in srgb,var(--accent) 4%,transparent);transition:transform .2s,box-shadow .2s}.search-shell:focus-within{transform:translateY(-2px);box-shadow:0 18px 60px var(--shadow),0 0 35px color-mix(in srgb,var(--accent2) 14%,transparent)}
+.searchbar{display:flex;align-items:center;gap:12px;background:var(--input-bg);border-radius:22px;min-height:66px;padding:0 17px;border:1px solid var(--line)}.search-icon{width:23px;height:23px;flex-shrink:0;color:var(--icon)}
+#q{flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--text);font:inherit;font-size:17px;padding:18px 0}#q::placeholder{color:var(--placeholder)}
+.iconbtn{display:grid;place-items:center;width:37px;height:37px;border:0;border-radius:12px;background:transparent;color:var(--icon);cursor:pointer}.iconbtn:hover{background:var(--surface-hover);color:var(--text)}
+.search-wrap{position:relative}.history-panel{display:none;position:absolute;top:calc(100% + 10px);left:0;right:0;background:var(--panel);border:1px solid var(--line-strong);border-radius:16px;padding:10px;text-align:left;z-index:8;box-shadow:0 18px 45px var(--shadow)}.history-head{display:flex;justify-content:space-between;align-items:center;color:var(--chip);font-size:12px;padding:5px 7px 9px}.history-head button{border:0;background:transparent;color:var(--accent-text);cursor:pointer;font:inherit}.history-item{display:flex;align-items:center;gap:8px;padding:8px;border-radius:10px}.history-item:hover{background:var(--surface)}.history-query{flex:1;min-width:0;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent;color:var(--text);font:inherit;cursor:pointer}.history-delete{border:0;background:transparent;color:var(--placeholder);cursor:pointer;font-size:16px}.history-empty{color:var(--ghost);font-size:12px;padding:8px}.iconbtn.listening{color:#ff8b9b;background:#ff5b751a}
+.search-submit{border:0;border-radius:12px;padding:11px 15px;background:var(--accent);color:#10131d;font:inherit;font-size:13px;font-weight:bold;cursor:pointer;white-space:nowrap}
+.search-submit:hover{filter:brightness(1.06)}
+@media(max-width:430px){.searchbar{gap:5px}.search-submit{padding:10px 9px;font-size:12px}.iconbtn{width:32px;height:34px}}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.toast[role="status"]{max-width:min(92vw,520px);text-align:center}
+.voice-note{color:var(--muted);font-size:12px;margin:0 0 12px;line-height:1.6}
+.quick{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:32px auto 0}.quick button{background:var(--surface);border:1px solid var(--line);border-radius:999px;color:var(--chip);padding:8px 12px;font-size:12px}
+.note{margin:35px auto 0;color:var(--ghost);font-size:12px;line-height:1.8}
+footer{text-align:center;padding:18px 12px 25px;color:var(--foot);font-size:11px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--toast-bg);color:var(--text);border:1px solid var(--toast-line);border-radius:12px;padding:10px 15px;display:none;z-index:5;font-size:13px}
+
+.settings-backdrop{position:fixed;inset:0;background:var(--overlay);backdrop-filter:blur(8px);z-index:10;display:none;align-items:center;justify-content:center;padding:16px}
+.settings-panel{width:min(620px,100%);max-height:82vh;overflow:auto;text-align:left;direction:ltr;background:var(--solid);border:1px solid var(--line-strong);border-radius:22px;padding:20px;box-shadow:0 25px 90px var(--shadow)}
+.settings-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:7px}.settings-head h2{margin:0;font-size:21px}
+.settings-sub{color:var(--muted);font-size:12px;line-height:1.7;margin:0 0 16px}.settings-close{border:1px solid var(--line-strong);background:var(--surface);color:var(--text);border-radius:10px;width:38px;height:38px;font-size:20px;cursor:pointer}
+.engine-list{display:grid;gap:8px}.engine-option{display:flex;align-items:center;gap:12px;text-align:left;width:100%;padding:12px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:13px;cursor:pointer}
+.engine-option.selected{border-color:var(--accent);background:var(--hover-tint)}.engine-option:hover{border-color:color-mix(in srgb,var(--accent) 47%,transparent);background:var(--hover-tint)}.engine-rank{width:34px;height:34px;flex-shrink:0;display:grid;place-items:center;border-radius:10px;background:var(--badge-bg);color:var(--badge-text);font-weight:bold}
+.engine-info{flex:1;min-width:0}.engine-info strong{display:block;font-size:14px}.engine-info small{display:block;color:var(--muted);font-size:11px;margin-top:4px;line-height:1.5}
+.engine-tag{font-size:10px;color:var(--tag);border:1px solid color-mix(in srgb,var(--accent2) 27%,transparent);padding:4px 7px;border-radius:999px;white-space:nowrap}
+.settings-section{font-size:12px;color:var(--accent-text);margin:18px 0 9px;font-weight:bold;letter-spacing:.3px}
+.appearance-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choice{display:flex;align-items:center;justify-content:center;gap:9px;padding:11px 8px;border-radius:13px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;font-size:13px;cursor:pointer;transition:.18s}
+.choice:hover{border-color:color-mix(in srgb,var(--accent) 47%,transparent);background:var(--hover-tint)}
+.choice[aria-pressed="true"]{border-color:var(--accent);background:var(--hover-tint);box-shadow:0 0 0 1px var(--accent) inset;font-weight:bold}
+.swatch{width:22px;height:22px;flex-shrink:0;border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c2));box-shadow:0 2px 8px #0003}
+.appearance-grid .choice{flex-direction:column;gap:7px;font-size:12px}
+@media(max-width:560px){.settings-panel{padding:15px}.engine-option{padding:10px}.engine-tag{display:none}.appearance-grid .choice{padding:10px 4px}}
+
+@media(max-width:560px){.topbar{padding:14px 15px}.toplinks button{padding:7px 9px}main{margin-top:72px}.subtitle{margin-bottom:30px}.searchbar{min-height:60px;padding:0 12px}#q{font-size:15px}h1{letter-spacing:-1px}}
+</style></head>
+<body>
+<nav class="topbar">
+ <div class="brand"><div class="brandmark" aria-hidden="true">T</div><div>T Search Plus<small>Personal search space</small></div></div>
+ <div class="toplinks"><button id="settingsBtn" type="button">⚙ Settings</button><button id="privacy" type="button">About</button></div>
+</nav>
+<main>
+ <div class="hero-label"><span class="pulse"></span> Your personal search space</div>
+ <h1><span class="t">T</span></h1>
+ <p class="subtitle">Your personal starting point for the web.</p>
+ <form id="searchForm" role="search">
+  <div class="search-shell"><div class="search-wrap"><div class="searchbar">
+   <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
+   <input id="q" name="q" type="search" placeholder="Search for anything..." autocomplete="off" aria-label="Search query">
+   <button type="button" class="iconbtn" id="voice" title="Voice search" aria-label="Voice search">🎙</button>
+   <button type="button" class="iconbtn" id="clear" title="Clear" aria-label="Clear search">✕</button>
+    <button type="submit" class="search-submit" id="searchBtn">Search</button>
+  </div><div class="history-panel" id="historyPanel"></div></div></div>
+ </form>
+ <div class="quick">
+  <button data-q="AI">AI</button><button data-q="C++ programming">C++</button><button data-q="Web design">Web design</button><button data-q="Robotics">Robotics</button><button data-q="Latest technology">Technology</button>
+ </div>
+ <p class="note">Enter a query, tap the microphone for voice input, or focus the bar to see recent searches.<br>Search history stays on this device.</p>
+</main>
+<footer>T · Personal start page · An internet connection is required for web results.</footer>
+
+<div class="settings-backdrop" id="settingsBackdrop" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+ <section class="settings-panel">
+  <div class="settings-head"><h2 id="settingsTitle">Search settings</h2><button class="settings-close" id="closeSettings" aria-label="Close settings">×</button></div>
+  <p class="settings-sub">Choose a search engine. Ranks 1–6 follow recent worldwide search-share estimates; other engines are grouped as regional or specialist options because a reliable global rank is not available for every service.</p>
+  <div class="settings-section">APPEARANCE · COLOR</div>
+  <div class="appearance-grid">
+   <button type="button" class="choice" data-set-accent="blue" style="--c1:#8ab4ff;--c2:#62e5e0"><span class="swatch" style="--c1:#8ab4ff;--c2:#62e5e0"></span>Blue</button>
+   <button type="button" class="choice" data-set-accent="purple" style="--c1:#b68cff;--c2:#f08cff"><span class="swatch" style="--c1:#b68cff;--c2:#f08cff"></span>Purple</button>
+   <button type="button" class="choice" data-set-accent="green" style="--c1:#6fdc9a;--c2:#62e5c0"><span class="swatch" style="--c1:#6fdc9a;--c2:#62e5c0"></span>Green</button>
+   <button type="button" class="choice" data-set-accent="red" style="--c1:#ff7f8f;--c2:#ffa86b"><span class="swatch" style="--c1:#ff7f8f;--c2:#ffa86b"></span>Red</button>
+  </div>
+  <div class="settings-section">APPEARANCE · MODE</div>
+  <div class="mode-grid">
+   <button type="button" class="choice" data-set-mode="light">☀ Light</button>
+   <button type="button" class="choice" data-set-mode="dark">☾ Dark</button>
+  </div>
+  <div class="settings-section">VOICE SEARCH LANGUAGE</div>
+  <p class="settings-sub">English (United States) is the only voice recognition language configured in this version. Voice input fills the search box; it never starts a search automatically.</p>
+  <div class="settings-section">GLOBAL RANKING · GENERAL WEB SEARCH</div><div class="engine-list" id="rankedEngines"></div>
+  <div class="settings-section">REGIONAL & SPECIALIST SEARCH ENGINES</div><div class="engine-list" id="otherEngines"></div>
+ </section>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+const q=document.getElementById('q');
+const engines={
+ google:{name:'Google',url:'https://www.google.com/search?q=',share:'Largest worldwide share',kind:'General web'},
+ bing:{name:'Microsoft Bing',url:'https://www.bing.com/search?q=',share:'Second-largest worldwide share',kind:'General web'},
+ yahoo:{name:'Yahoo Search',url:'https://search.yahoo.com/search?p=',share:'Major global search brand',kind:'General web'},
+ yandex:{name:'Yandex',url:'https://yandex.com/search/?text=',share:'Popular in Russia and nearby regions',kind:'Regional / general'},
+ duckduckgo:{name:'DuckDuckGo',url:'https://duckduckgo.com/?q=',share:'Privacy-focused search',kind:'Privacy'},
+ baidu:{name:'Baidu',url:'https://www.baidu.com/s?wd=',share:'Major search engine in China',kind:'Regional / general'},
+ naver:{name:'Naver',url:'https://search.naver.com/search.naver?query=',share:'Major South Korean portal',kind:'Regional'},
+ ecosia:{name:'Ecosia',url:'https://www.ecosia.org/search?q=',share:'Environment-focused search',kind:'General / purpose'},
+ brave:{name:'Brave Search',url:'https://search.brave.com/search?q=',share:'Independent index and privacy focus',kind:'Privacy'},
+ seznam:{name:'Seznam',url:'https://search.seznam.cz/?q=',share:'Popular in Czechia',kind:'Regional'},
+ cococ:{name:'Cốc Cốc',url:'https://coccoc.com/search?query=',share:'Popular in Vietnam',kind:'Regional'},
+ rakuten:{name:'Rakuten Search',url:'https://www.rakuten.co.jp/search/?sitem=',share:'Japan-focused ecosystem',kind:'Regional / shopping'},
+ daum:{name:'Daum Search',url:'https://search.daum.net/search?q=',share:'South Korean portal',kind:'Regional'},
+ ukrnet:{name:'UKR.net Search',url:'https://search.ukr.net/?q=',share:'Ukraine-focused portal',kind:'Regional'},
+ nate:{name:'Nate Search',url:'https://search.nate.com/search/all.html?q=',share:'South Korean portal',kind:'Regional'},
+ mailru:{name:'Mail.ru Search',url:'https://go.mail.ru/search?q=',share:'Russian-language portal',kind:'Regional'},
+ aol:{name:'AOL Search',url:'https://search.aol.com/aol/search?q=',share:'Established search portal',kind:'Portal'},
+ gmx:{name:'GMX Search',url:'https://www.gmx.com/search/?q=',share:'Portal search',kind:'Portal'},
+ qwant:{name:'Qwant',url:'https://www.qwant.com/?q=',share:'Privacy-oriented European search',kind:'Privacy'},
+ mojeek:{name:'Mojeek',url:'https://www.mojeek.com/search?q=',share:'Independent crawler and index',kind:'Independent index'},
+ startpage:{name:'Startpage',url:'https://www.startpage.com/sp/search?query=',share:'Privacy-oriented results',kind:'Privacy'},
+ swisscows:{name:'Swisscows',url:'https://swisscows.com/en/web?query=',share:'Privacy-focused search',kind:'Privacy'},
+ kagi:{name:'Kagi',url:'https://kagi.com/search?q=',share:'Subscription search service',kind:'Subscription'},
+ you:{name:'You.com',url:'https://you.com/search?q=',share:'AI-assisted search',kind:'AI search'},
+ dogpile:{name:'Dogpile',url:'https://www.dogpile.com/serp?q=',share:'Metasearch service',kind:'Metasearch'},
+ metacrawler:{name:'MetaCrawler',url:'https://www.metacrawler.com/serp?q=',share:'Metasearch service',kind:'Metasearch'},
+ lycos:{name:'Lycos',url:'https://search.lycos.com/web/?q=',share:'Established web portal',kind:'Portal'},
+ sogou:{name:'Sogou',url:'https://www.sogou.com/web?query=',share:'Chinese-language search',kind:'Regional'},
+ petal:{name:'Petal Search',url:'https://petalsearch.com/search?query=',share:'Huawei search service',kind:'Regional / mobile'}
+};
+const ENGINE_KEY='t-search-engine-v1';
+function readEngine(){try{const v=localStorage.getItem(ENGINE_KEY);return Object.prototype.hasOwnProperty.call(engines,v)?v:'google'}catch(e){return 'google'}}
+let currentEngine=readEngine();
+let suppressFocus=false;
+function setEngine(id){if(!Object.prototype.hasOwnProperty.call(engines,id))return false;currentEngine=id;try{localStorage.setItem(ENGINE_KEY,id)}catch(e){showToast('Default engine changed for this session, but could not be saved on this device.')}refreshEngineSelection();return true}
+function refreshEngineSelection(){document.querySelectorAll('.engine-option').forEach(b=>{const on=b.dataset.engine===currentEngine;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on));const tag=b.querySelector('.engine-tag');if(tag)tag.textContent=on?'Default':'Set default'})}
+const VOICE_LANG='en-US';
+const HISTORY_KEY='t-search-history-v1';
+function readHistory(){try{const raw=localStorage.getItem(HISTORY_KEY);const data=JSON.parse(raw||'[]');if(!Array.isArray(data))return [];return data.filter(x=>typeof x==='string'&&x.trim()).map(x=>x.trim()).slice(0,12)}catch(e){return []}}
+function saveHistory(term){const normalized=term.trim();if(!normalized)return;const list=readHistory().filter(item=>item.toLocaleLowerCase()!==normalized.toLocaleLowerCase());list.unshift(normalized);try{localStorage.setItem(HISTORY_KEY,JSON.stringify(list.slice(0,12)))}catch(e){showToast('Search started, but history could not be saved.')}renderHistory()}
+function clearHistory(){try{localStorage.removeItem(HISTORY_KEY)}catch(e){}renderHistory();showToast('Search history cleared.')}
+function renderHistory(){const panel=document.getElementById('historyPanel');panel.replaceChildren();const head=document.createElement('div');head.className='history-head';const title=document.createElement('span');title.textContent='Recent searches';const clear=document.createElement('button');clear.type='button';clear.id='clearHistory';clear.textContent='Clear history';clear.addEventListener('click',clearHistory);head.append(title,clear);panel.appendChild(head);const list=readHistory();if(!list.length){const empty=document.createElement('div');empty.className='history-empty';empty.textContent='Your searches will appear here.';panel.appendChild(empty);return}list.forEach(term=>{const row=document.createElement('div');row.className='history-item';const pick=document.createElement('button');pick.type='button';pick.className='history-query';pick.textContent='◷  '+term;pick.addEventListener('click',()=>{q.value=term;hideHistory();suppressFocus=true;q.focus();suppressFocus=false});const del=document.createElement('button');del.type='button';del.className='history-delete';del.textContent='×';del.title='Remove from history';del.setAttribute('aria-label','Remove '+term+' from history');del.addEventListener('click',()=>{const next=readHistory().filter(x=>x!==term);try{localStorage.setItem(HISTORY_KEY,JSON.stringify(next))}catch(e){showToast('Could not update history on this device.')}renderHistory()});row.append(pick,del);panel.appendChild(row)})}
+function showHistory(){renderHistory();document.getElementById('historyPanel').style.display='block'}
+function hideHistory(){document.getElementById('historyPanel').style.display='none'}
+function go(id){const term=q.value.trim();if(!term){q.focus();showToast('Type something to search first.');return;}const engine=engines[id];if(!engine){showToast('That search engine is unavailable.');return;}saveHistory(term);hideHistory();const url=engine.url+encodeURIComponent(term);const opened=window.open(url,'_blank');if(opened===null)showToast('Your browser blocked the search tab. Allow pop-ups for this page or try again.');else{try{opened.opener=null}catch(e){}}}
+let toastTimer=null;function showToast(message){const t=document.getElementById('toast');t.textContent=message;t.style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.style.display='none',3500)}
+document.getElementById('searchForm').addEventListener('submit',e=>{e.preventDefault();go(currentEngine)});
+document.getElementById('clear').addEventListener('click',()=>{q.value='';q.focus();showHistory()});
+q.addEventListener('focus',()=>{if(!suppressFocus)showHistory()});
+q.addEventListener('input',()=>{if(q.value.trim())hideHistory();else showHistory()});
+document.addEventListener('click',e=>{if(!(e.target instanceof Element)||!e.target.closest('.search-wrap'))hideHistory()});
+const voiceBtn=document.getElementById('voice');
+const SpeechRecognitionAPI=window.SpeechRecognition||window.webkitSpeechRecognition;
+let recognition=null;
+if(!SpeechRecognitionAPI){voiceBtn.addEventListener('click',()=>showToast('Voice search is not supported by this browser. Try a recent version of Chrome or Edge.'))}
+else{voiceBtn.addEventListener('click',()=>{if(recognition){try{recognition.abort()}catch(e){}recognition=null;voiceBtn.classList.remove('listening');return}if(!window.isSecureContext&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){showToast('Voice search usually requires HTTPS. Open this page over HTTPS and allow microphone access.');return}try{const instance=new SpeechRecognitionAPI();recognition=instance;instance.lang=VOICE_LANG;instance.interimResults=false;instance.maxAlternatives=1;voiceBtn.classList.add('listening');showToast('Listening in English (US)… speak now.');instance.onresult=e=>{const transcript=e.results&&e.results[0]&&e.results[0][0]?e.results[0][0].transcript:'';if(transcript){q.value=transcript;hideHistory();suppressFocus=true;q.focus();suppressFocus=false;showToast('Voice input added. Press Search or Enter to search.')}else showToast('No speech was recognized. Please try again.')};instance.onerror=e=>{const messages={'not-allowed':'Microphone permission was denied. Allow microphone access in your browser settings.','service-not-allowed':'Voice recognition is blocked by the browser or service.','audio-capture':'No working microphone was found.','network':'Voice recognition needs a working internet connection.','no-speech':'No speech was detected. Please try again.','aborted':'Voice input was cancelled.'};showToast(messages[e.error]||'Voice search failed. Check microphone permission and connection.')};instance.onend=()=>{voiceBtn.classList.remove('listening');if(recognition===instance)recognition=null};instance.start()}catch(e){recognition=null;voiceBtn.classList.remove('listening');showToast('Voice search could not start. Check microphone permission and try again.')}})}
+document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>{q.value=b.dataset.q;hideHistory();suppressFocus=true;q.focus();suppressFocus=false}));
+const ranked=['google','bing','yahoo','yandex','duckduckgo','baidu'];
+const specialist=['naver','ecosia','brave','seznam','cococ','rakuten','daum','ukrnet','nate','mailru','aol','gmx','qwant','mojeek','startpage','swisscows','kagi','you','dogpile','metacrawler','lycos','sogou','petal'];
+function addEngine(id,rank){const e=engines[id];const b=document.createElement('button');b.type='button';b.className='engine-option';b.dataset.engine=id;const badge=document.createElement('span');badge.className='engine-rank';badge.textContent=String(rank||'★');const info=document.createElement('span');info.className='engine-info';const name=document.createElement('strong');name.textContent=e.name;const details=document.createElement('small');details.textContent=e.share+' · '+e.kind;info.append(name,details);const tag=document.createElement('span');tag.className='engine-tag';tag.textContent='Set default';b.append(badge,info,tag);b.addEventListener('click',()=>{setEngine(id);closeSettings();showToast(e.name+' is now your default search engine. Press Search or Enter to search.')});document.getElementById(rank?'rankedEngines':'otherEngines').appendChild(b);}
+ranked.forEach((id,i)=>addEngine(id,i+1));specialist.forEach(id=>addEngine(id,null));refreshEngineSelection();
+const backdrop=document.getElementById('settingsBackdrop');
+function openSettings(){backdrop.style.display='flex';document.getElementById('closeSettings').focus()}
+function closeSettings(){backdrop.style.display='none';document.getElementById('settingsBtn').focus()}
+document.getElementById('settingsBtn').onclick=openSettings;
+document.getElementById('closeSettings').onclick=closeSettings;
+backdrop.addEventListener('click',e=>{if(e.target===backdrop)closeSettings()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSettings()});
+document.getElementById('privacy').onclick=()=>showToast('T is a personal HTML start page, not a standalone browser. Searches open in your selected search engine.');
+const APPEARANCE_KEY='t-search-appearance-v1';
+const ACCENTS=['blue','purple','green','red'];
+function readAppearance(){try{const s=JSON.parse(localStorage.getItem(APPEARANCE_KEY)||'{}');return{accent:ACCENTS.includes(s.accent)?s.accent:'blue',mode:s.mode==='light'?'light':'dark'}}catch(e){return{accent:'blue',mode:'dark'}}}
+function applyAppearance(a){const root=document.documentElement;root.dataset.accent=a.accent;root.dataset.mode=a.mode;document.querySelectorAll('[data-set-accent]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.setAccent===a.accent)));document.querySelectorAll('[data-set-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.setMode===a.mode)));}
+function setAppearance(key,value){const a=readAppearance();a[key]=value;try{localStorage.setItem(APPEARANCE_KEY,JSON.stringify(a))}catch(e){showToast('Appearance changed for this session, but could not be saved on this device.')}applyAppearance(a)}
+document.querySelectorAll('[data-set-accent]').forEach(b=>b.addEventListener('click',()=>setAppearance('accent',b.dataset.setAccent)));
+document.querySelectorAll('[data-set-mode]').forEach(b=>b.addEventListener('click',()=>setAppearance('mode',b.dataset.setMode)));
+applyAppearance(readAppearance());
+</script>
+</body></html>
